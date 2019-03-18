@@ -171,7 +171,7 @@ void launchWeb(int webtype) {
             server.on("/", webHandleConfig);
             server.on("/a", webHandleConfigSave); 
             server.on("/gpio", webHandleGpio);
-            server.on("/xml",handleXML);         
+//            server.on("/xml",handleXML);         
           } else {
             //setup DNS since we are a client in WiFi net
             if (!MDNS.begin(host)) {
@@ -184,7 +184,7 @@ void launchWeb(int webtype) {
             server.on("/", webHandleRoot);  
             server.on("/cleareeprom", webHandleClearRom);
             server.on("/gpio", webHandleGpio);
-            server.on("/xml",handleXML);
+           // server.on("/xml",handleXML);
           }
           //server.onNotFound(webHandleRoot);
           server.begin();
@@ -377,22 +377,23 @@ void webHandleGpio(){
 //  } 
 
 
-     buildJavascript(); 
+   //  buildJavascript(); 
    
-    s="<!DOCTYPE HTML>\n"; 
-    s+=javaScript;
-    s+="<BODY onload='process()'>\n";
-    s+="<BR>Wifi Bt Esp32 Heavy Duty Relay Board<BR>\n";
-    s+="<BR><BR>\n";
-    s+="<p>Light is <A id='runtime'></A>\n</p>";
-    s+="</BODY>\n";
+   // s="<!DOCTYPE HTML>\n"; 
+   // s+=javaScript;
+ //   s+="<BODY onload='process()'>\n";
+  //  s+="<BR>Wifi Bt Esp32 Heavy Duty Relay Board<BR>\n";
+ //   s+="<BR><BR>\n";
+ //   s+="<p>Light is <A id='runtime'></A>\n</p>";
+ //   s+="</BODY>\n";
 
 //.............................................................
 
 
-
-    s += "Relay_GPIO_12 ";
-    s += (digitalRead(OUTPIN_12))?"ON":"OFF";
+    s ="<!DOCTYPE HTML>\n"; 
+    s +="<BODY>\n";
+    s +="<BR>Wifi Bt Esp32 Heavy Duty Relay Board<BR>\n";
+    s +="</BODY>\n";
     s += "<p>Change to <form action='gpio'><input type='radio' name='state_sw' value='1' ";
     s += (digitalRead(OUTPIN_12))?"checked":"";
     s += ">GPIO_12_On<input type='radio' name='state_sw' value='0' ";
@@ -414,49 +415,49 @@ void webHandleGpio(){
 }
 
 
-void buildJavascript(){
-  javaScript="<SCRIPT>\n";
-  javaScript+="var xmlHttp=createXmlHttpObject();\n";
+//void buildJavascript(){
+//  javaScript="<SCRIPT>\n";
+//  javaScript+="var xmlHttp=createXmlHttpObject();\n";
+//
+//  javaScript+="function createXmlHttpObject(){\n";
+//  javaScript+=" if(window.XMLHttpRequest){\n";
+//  javaScript+="    xmlHttp=new XMLHttpRequest();\n";
+//  javaScript+=" }else{\n";
+//  javaScript+="    xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');\n";
+//  javaScript+=" }\n";
+//  javaScript+=" return xmlHttp;\n";
+//  javaScript+="}\n";
+//
+//  javaScript+="function process(){\n";
+//  javaScript+=" if(xmlHttp.readyState==0 || xmlHttp.readyState==4){\n";
+//  javaScript+="   xmlHttp.open('PUT','xml',true);\n";
+//  javaScript+="   xmlHttp.onreadystatechange=handleServerResponse;\n"; // no brackets?????
+//  javaScript+="   xmlHttp.send(null);\n";
+//  javaScript+=" }\n";
+//  javaScript+=" setTimeout('process()',1000);\n";
+//  javaScript+="}\n";
+// 
+//  javaScript+="function handleServerResponse(){\n";
+//  javaScript+=" if(xmlHttp.readyState==4 && xmlHttp.status==200){\n";
+//  javaScript+="   xmlResponse=xmlHttp.responseXML;\n";
+//  javaScript+="   xmldoc = xmlResponse.getElementsByTagName('response');\n";
+//  javaScript+="   message = xmldoc[0].firstChild.nodeValue;\n";
+//  javaScript+="   document.getElementById('runtime').innerHTML=message;\n";
+//  javaScript+=" }\n";
+//  javaScript+="}\n";
+//  javaScript+="</SCRIPT>\n";
+//}
 
-  javaScript+="function createXmlHttpObject(){\n";
-  javaScript+=" if(window.XMLHttpRequest){\n";
-  javaScript+="    xmlHttp=new XMLHttpRequest();\n";
-  javaScript+=" }else{\n";
-  javaScript+="    xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');\n";
-  javaScript+=" }\n";
-  javaScript+=" return xmlHttp;\n";
-  javaScript+="}\n";
+//void buildXML(){
+//  XML="<?xml version='1.0'?>";
+//  XML+="<response>";
+//  //XML+=millis2time();
+//  XML+=(phase_detect())?"ON":"OFF";
+//  XML+="</response>";
+//}
 
-  javaScript+="function process(){\n";
-  javaScript+=" if(xmlHttp.readyState==0 || xmlHttp.readyState==4){\n";
-  javaScript+="   xmlHttp.open('PUT','xml',true);\n";
-  javaScript+="   xmlHttp.onreadystatechange=handleServerResponse;\n"; // no brackets?????
-  javaScript+="   xmlHttp.send(null);\n";
-  javaScript+=" }\n";
-  javaScript+=" setTimeout('process()',1000);\n";
-  javaScript+="}\n";
- 
-  javaScript+="function handleServerResponse(){\n";
-  javaScript+=" if(xmlHttp.readyState==4 && xmlHttp.status==200){\n";
-  javaScript+="   xmlResponse=xmlHttp.responseXML;\n";
-  javaScript+="   xmldoc = xmlResponse.getElementsByTagName('response');\n";
-  javaScript+="   message = xmldoc[0].firstChild.nodeValue;\n";
-  javaScript+="   document.getElementById('runtime').innerHTML=message;\n";
-  javaScript+=" }\n";
-  javaScript+="}\n";
-  javaScript+="</SCRIPT>\n";
-}
-
-void buildXML(){
-  XML="<?xml version='1.0'?>";
-  XML+="<response>";
-  //XML+=millis2time();
-  XML+=(phase_detect())?"ON":"OFF";
-  XML+="</response>";
-}
-
-void handleXML(){
-  buildXML();
-  server.send(200,"text/xml",XML);
-}
+//void handleXML(){
+//  buildXML();
+//  server.send(200,"text/xml",XML);
+//}
 
